@@ -4,12 +4,14 @@ from bs4 import BeautifulSoup
 
 BASE_URL = 'https://www.rc-results.com'
 
-RACE_URL = '/Viewer/Main/MeetingSummary?meetingId=9572'
+RACE_URL = '/Viewer/Main/MeetingSummary?meetingId=10354'
 
-URL = BASE_URL + RACE_URL #"https://www.rc-results.com/Viewer/Main/MeetingSummary?meetingId=9572"
+URL = BASE_URL + RACE_URL
 page = requests.get(URL, verify=False)
 
 soup = BeautifulSoup(page.content, "html.parser")
+
+race = soup.find('h3').text
 
 links = soup.find_all('a', href=True)
 
@@ -79,5 +81,5 @@ for event in event_links:
 
 
     for lap in driver_lap_times:
-       result = headers[0].string + ',' + headers[1].string + ',' + driver_name + ',' + lap
+       result = race + ',' + headers[0].string + ',' + headers[1].string + ',' + driver_name + ',' + lap
        write_to_file(result)
